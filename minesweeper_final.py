@@ -1,15 +1,16 @@
 import time
-from PIL import ImageGrab
+import pyautogui
 import cv2 as cv
 import numpy as np
 from typing import Tuple, List
 
 Position = Tuple[int, int]
+MAIN_COLOR = 198
 
 
 def task2(image: np.ndarray) -> Tuple[Position, Position]:
-    mask = cv.inRange(image, np.array([198, 198, 198]),
-                      np.array([198, 198, 198]))
+    mask = cv.inRange(image, np.array([MAIN_COLOR, MAIN_COLOR, MAIN_COLOR]),
+                      np.array([MAIN_COLOR, MAIN_COLOR, MAIN_COLOR]))
     grayscale_image = cv.cvtColor(cv.bitwise_and(image, image, mask=mask),
                                   cv.COLOR_BGR2GRAY)
     contours, hierarchy = cv.findContours(grayscale_image, cv.RETR_TREE, 2)
@@ -23,8 +24,8 @@ def task1(image: np.ndarray, minefield: Tuple[Position, Position]) \
         -> Tuple[np.ndarray, np.ndarray]:
     image = image[minefield[0][1]:minefield[1][1],
                   minefield[0][0]:minefield[1][0]]
-    mask = cv.inRange(image, np.array([198, 198, 198]),
-                      np.array([198, 198, 198]))
+    mask = cv.inRange(image, np.array([MAIN_COLOR, MAIN_COLOR, MAIN_COLOR]),
+                      np.array([MAIN_COLOR, MAIN_COLOR, MAIN_COLOR]))
     grayscale_image = cv.cvtColor(cv.bitwise_and(image, image, mask=mask),
                                   cv.COLOR_BGR2GRAY)
 
@@ -72,7 +73,7 @@ def task1(image: np.ndarray, minefield: Tuple[Position, Position]) \
         difference = first_child[2][0][0] - second_child[0][0][0]
         if second_child_size + first_child_size < difference - 2:
             tile_size = first_size + (
-                    difference - second_child_size - first_child_size) // 2 + 4
+                difference - second_child_size - first_child_size) // 2 + 4
         else:
             tile_size = second_child_size + 3
     else:
@@ -263,9 +264,9 @@ def task(minefield: List[str]) -> List[str]:
             if minefield[y][x] not in non_important:
                 for change in mine_check((y, x), minefield, helper):
                     helper[change[0][0]] = helper[change[0][0]][
-                                           :change[0][1]] + change[1] + \
-                                           helper[change[0][0]][
-                                           change[0][1] + 1:]
+                        :change[0][1]] + change[1] + \
+                        helper[change[0][0]][
+                        change[0][1] + 1:]
 
     change_count = 1
     while change_count != 0:
@@ -276,9 +277,9 @@ def task(minefield: List[str]) -> List[str]:
                     for change in evaluate_tile((y, x), minefield, helper):
                         change_count += 1
                         helper[change[0][0]] = helper[change[0][0]][
-                                               :change[0][1]] + change[1] + \
-                                               helper[change[0][0]][
-                                               change[0][1] + 1:]
+                            :change[0][1]] + change[1] + \
+                            helper[change[0][0]][
+                            change[0][1] + 1:]
     return helper
 
 
@@ -304,17 +305,18 @@ def final(image: np.ndarray, helper: List[str],
 
 
 while True:
-    screenshot = np.array(ImageGrab.grab())
+    screenshot = np.array(pyautogui.screenshot())
     try:
-        left_side = screenshot[:, :len(screenshot[0] // 2)]
-        left_side = cv.cvtColor(left_side, cv.COLOR_RGB2BGR)
-        field = task2(left_side)
-        grid = task1(left_side, field)
-        hint = task(task3(left_side, grid))
-        output = final(left_side, hint, grid)[field[0][1]:field[1][1],
-                                              field[0][0]:field[1][0]]
+        right_side = screenshot[:, len(screenshot[0]) // 2:]
+        right_side = cv.cvtColor(right_side, cv.COLOR_RGB2BGR)
+        field = task2(right_side)
+        grid = task1(right_side, field)
+        hint = task(task3(right_side, grid))
+        output = final(right_side, hint, grid)[field[0][1]:field[1][1],
+                                               field[0][0]:field[1][0]]
         cv.imshow("Result", output)
-        cv.waitKey(100)
     except (IndexError, ValueError):
-        print("Zapni: https://minesweeper.online/ v ľavej časti obrazovky.")
+        print("Turn on: https://minesweeper.online/ in the right part of the screen.")
         time.sleep(0.1)
+    if cv.waitKey(1) == ord("q"):
+        break
