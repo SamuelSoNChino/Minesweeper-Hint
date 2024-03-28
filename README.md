@@ -7,7 +7,7 @@ To exit the program simple press Q when focused on the hint widnow.
 
 If the hint doesn't open, try to play with different zoom and birghtness settings. If even this doesn't help, you can try to replace
 the MAIN_COLOR constant with the main shade of grey your minefield has (the biggest areas of the frame are of this color). You can find 
-it out by pasting screenshot into https://imagecolorpicker.com/, and you will get the RGB code of that color, than try to play with different zoom values.
+it out by pasting screenshot into https://imagecolorpicker.com/, and you will get the RGB code of that color, then try to play with different zoom values.
 
 ## PROGRAM EXPLAINED:
 
