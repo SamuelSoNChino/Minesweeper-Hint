@@ -3,7 +3,7 @@ The hint is based on visual detection of the minesweeper field at https://minesw
 To use it, start a game in the right half of the screen and turn on the code, you should see color hint in another widnow.
 To exit the program simple press Q when focused on the hint widnow.
 
-## TROUUBLESHOOTING:
+## TROUBLESHOOTING:
 
 If the hint doesn't open, try to play with different zoom and birghtness settings. If even this doesn't help, you can try to replace
 the MAIN_COLOR constant with the main shade of grey your minefield has (the biggest areas of the frame are of this color). You can find 
