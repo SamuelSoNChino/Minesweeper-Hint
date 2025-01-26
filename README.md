@@ -4,6 +4,8 @@ The Minesweeper Hint is a Python program designed to assist players by providing
 
 The app shares most of the logic with https://github.com/SamuelSoNChino/Minesweeper-Bot/
 
+> This was one of my earlier projects, so there are parts I would refactor. I might look into it in the future.
+
 ### Features
 
 - **Hint Generation**: The application identifies safe tiles to click and marks suspected mines, reducing the need for random guesses.
